@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>按国家翻译 · 安装与使用</title>
+<style>
+  :root{
+    --ink:#14171c; --muted:#6b7280; --line:#e6e8ee; --soft:#f6f7fa;
+    --brand:#2563eb; --brand-soft:#eef3ff; --warn-bg:#fff8e8; --warn-line:#f0c36d; --warn-ink:#7a4d00;
+    --ok:#0f9d58; --ok-soft:#e9f7ef;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef1f7;color:var(--ink);
+    font:14px/1.72 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  .page{width:1080px;margin:0 auto;background:#fff;padding:44px 52px 40px;}
+  .kicker{font-size:12px;letter-spacing:.14em;color:var(--brand);font-weight:700;text-transform:uppercase;}
+  h1{font-size:34px;line-height:1.28;margin:10px 0 10px;letter-spacing:-.5px;}
+  .lede{color:var(--muted);font-size:14.5px;margin:0 0 6px;}
+  .hero{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 55%,#1e3a8a 100%);color:#fff;border-radius:18px;padding:32px 34px 28px;margin:18px 0 34px;}
+  .hero .kicker{color:#c7d7ff;} .hero h1{color:#fff;margin:8px 0 10px;} .hero .lede{color:#dbe6ff;}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .tag{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12px;padding:4px 11px;border-radius:999px;}
+  h2{font-size:19px;margin:34px 0 12px;display:flex;align-items:center;gap:10px;}
+  h2 .n{width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;font-size:14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  h3{font-size:14.5px;margin:0 0 6px;}
+  p{margin:0 0 10px;}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 14px;}
+  .card{border:1px solid var(--line);border-radius:14px;padding:20px 22px;background:#fff;margin:12px 0;}
+  .card.soft{background:var(--soft);}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+  .steps li{position:relative;padding:0 0 0 46px;margin:0 0 18px;}
+  .steps li:last-child{margin-bottom:0;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:999px;
+    background:var(--brand-soft);color:var(--brand);border:1px solid #cfdcff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .steps b{display:block;font-size:14.5px;} .steps span{color:var(--muted);font-size:13px;}
+  .steps span b,.steps li b.inline{display:inline;font-size:inherit;font-weight:600;color:var(--ink);}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f1f3f8;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;}
+  .codeblock{background:#0f172a;color:#e6ecff;border-radius:10px;padding:13px 15px;font-size:12.5px;line-height:1.7;word-break:break-all;}
+  table{border-collapse:collapse;width:100%;font-size:13px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-size:12px;color:var(--muted);font-weight:600;background:#fafbfe;}
+  tr:last-child td{border-bottom:none;}
+  .warn{background:var(--warn-bg);border-left:4px solid var(--warn-line);color:var(--warn-ink);padding:14px 16px;border-radius:8px;font-size:13px;margin:16px 0;}
+  .ok{background:var(--ok-soft);border-left:4px solid var(--ok);padding:14px 16px;border-radius:8px;font-size:13px;margin:16px 0;}
+  .pill{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--brand-soft);color:var(--brand);border:1px solid #d5e1ff;margin-right:6px;}
+  .pill.gray{background:#f3f4f7;color:#5b6478;border-color:#e3e6ee;}
+  .footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:12px;}
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;}
+  .flow .box{border:1px solid var(--line);background:#fbfcff;border-radius:8px;padding:7px 11px;color:#2b3446;}
+  .flow .arrow{color:#9aa4b8;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+  @media (max-width:1040px){ .page{width:100%;} .grid,.grid3{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <section class="hero">
+    <div class="kicker">DSH PLUGIN · INSTALL GUIDE</div>
+    <h1>按国家翻译<br>安装与使用（从零到能翻）</h1>
+    <div class="lede">装 DSH → 装插件 → 填一个 key → 顶栏多出「翻译」。全程约 3 分钟，不用命令行（市场安装法）。</div>
+    <div class="tags">
+      <span class="tag">3 步安装</span>
+      <span class="tag">依赖只有 2 个</span>
+      <span class="tag">249 国</span>
+      <span class="tag">DeepSeek / Google 双引擎</span>
+    </div>
+  </section>
+
+  <h2><span class="n">1</span>先看清：装完是什么样</h2>
+  <div class="card soft">
+    <div class="flow">
+      <span class="box">对话</span><span class="arrow">·</span>
+      <span class="box">轨迹</span><span class="arrow">·</span>
+      <span class="box">上下文</span><span class="arrow">·</span>
+      <span class="box">队列</span><span class="arrow">→</span>
+      <span class="box" style="background:#eef3ff;border-color:#c9d8ff;color:#1d4ed8;font-weight:600;">翻译</span>
+    </div>
+    <p style="margin:12px 0 0;color:var(--muted);font-size:13px;">就多这一个标签。点开是：目标国家 + 翻译引擎 + 语气 + 输入框 + 「翻译」按钮。没有别的配置要动。</p>
+  </div>
+
+  <h2><span class="n">2</span>三步装好（推荐：市场安装）</h2>
+  <ol class="steps">
+    <li><b>DSH → 插件 → 发现 → 添加索引源</b><span>把下面这一行地址粘进去，确定：</span>
+      <div class="codeblock" style="margin-top:8px;">https://hbycwzm001.github.io/dsh-plugin-translate/market/index.json</div>
+    </li>
+    <li><b>在插件市场里搜「Translate」或「按国家翻译」</b><span>点<b>安装</b>。装完会显示已启用（不需要重启 DSH）。</span></li>
+    <li><b>回到对话页，按 Ctrl + R 刷新</b><span>顶栏出现「翻译」标签，就能用了。</span></li>
+  </ol>
+
+  <h2><span class="n">3</span>另外两种装法（市场装不上时用）</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>git 直装</h3>
+      <p class="sub">有命令行环境时最快，一条命令：</p>
+      <div class="codeblock">dsh plugin add git+https://github.com/hbycwzm001/dsh-plugin-translate.git</div>
+    </div>
+    <div class="card">
+      <h3>本地目录安装</h3>
+      <p class="sub">离线场景：下载仓库 zip → 解压 → 插件 → <b>从本地目录安装</b> → 选解压出来的根目录（里面有 <code>package.json</code> 那一层）。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">4</span>依赖：只有两件</h2>
+  <table>
+    <tr><th style="width:210px;">东西</th><th style="width:110px;">必须?</th><th>说明 / 哪里来</th></tr>
+    <tr><td><b>DSH Desktop</b> ≥ 0.2.2-rc.1</td><td>必须</td><td>宿主要先装着、能正常打开对话。</td></tr>
+    <tr><td><b>本插件</b> dsh-plugin-translate</td><td>必须</td><td>就是本文教你装的这个，约 60 KB。</td></tr>
+    <tr><td><b>DeepSeek API Key</b></td><td>强烈建议</td><td>放在 <code>~/.dsh/.credentials.yaml</code> 里叫 <code>DEEPSEEK_API_KEY</code>；如果 DSH 本身能正常聊天，通常已经有了。没有也能在面板里临时填。</td></tr>
+    <tr><td>能翻墙的客户端</td><td>可选</td><td>只有你切到 <b>Google 引擎</b> 才需要；用 DeepSeek 引擎完全不用。</td></tr>
+    <tr><td>Python / Node / 模型文件</td><td>不需要</td><td>这个插件没有本地模型、不下载大文件，纯接口调用。</td></tr>
+  </table>
+  <div class="ok">
+    <b>一句话</b>：DSH 能聊天 = key 已经有了 = 插件装完就能直接翻。不用另外买服务、不用下几百兆。
+  </div>
+
+  <h2><span class="n">5</span>装完第一次用（4 步）</h2>
+  <ol class="steps">
+    <li><b>点顶栏「翻译」</b><span>对话区换成翻译面板。</span></li>
+    <li><b>选目标国家</b><span>常用国家有快捷按钮（美国 / 日本 / 墨西哥 / 巴西 / 德国 / 法国）；其他 240 多个点开列表或用搜索框输国名、语言、货币代码。</span></li>
+    <li><b>粘中文 → 点「翻译」</b><span>也可以按 <code>Ctrl + Enter</code>，一般 1～3 秒出结果。</span></li>
+    <li><b>复制 / 反向翻译</b><span>结果卡上「⧉ 复制」直接拿走；拿不准就点「⇄ 反向翻译」翻回中文自检。</span></li>
+  </ol>
+
+  <h2><span class="n">6</span>两个开关要知道</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>翻译引擎</h3>
+      <p class="sub"><b>DeepSeek（默认，推荐）</b>：按国家做本地化，翻成当地人真正会说的话。<br><b>Google</b>：逐句直译，只用来对照，需要代理。</p>
+    </div>
+    <div class="card">
+      <h3>显示 / 隐藏「翻译」标签</h3>
+      <p class="sub">插件设置里有一个开关。<b>关掉只是隐藏入口</b>，翻译能力（Agent 工具）照常可用；想再看到就重新打开。</p>
+    </div>
+  </div>
+
+  <h2><span class="n">7</span>装完没出现「翻译」标签？按顺序查</h2>
+  <table>
+    <tr><th style="width:250px;">现象</th><th>怎么办</th></tr>
+    <tr><td>插件列表里没有它</td><td>索引源没加成功。回「插件 → 发现 → 添加索引源」重新粘一次地址；粘完列表里应能看到 <b>Country Translator</b>。</td></tr>
+    <tr><td>装上了但没标签</td><td>没刷新。在 DSH 里按 <code>Ctrl + R</code>；或退出重开 DSH。</td></tr>
+    <tr><td>标签在，但下拉是空的</td><td>还是缓存问题：<code>Ctrl + R</code> 硬刷一次。插件内置了 249 国表，正常不会空。</td></tr>
+    <tr><td>一点翻译就报 key 无效</td><td>面板会弹出输入框，粘一个有效 key 点「保存并重试」。key 只存在本次会话内存里，不写盘。</td></tr>
+    <tr><td>选 Google 时报 429 / 超时</td><td>谷歌免费接口对出口 IP 限流。换节点，或直接用 DeepSeek 引擎。</td></tr>
+  </table>
+
+  <h2><span class="n">8</span>把插件发给别人</h2>
+  <div class="card">
+    <p class="sub" style="margin-bottom:8px;">你只需要发两条东西给对方：</p>
+    <p><b>① 索引源地址</b>（装插件用）</p>
+    <div class="codeblock">https://hbycwzm001.github.io/dsh-plugin-translate/market/index.json</div>
+    <p style="margin-top:12px;"><b>② 这份说明图</b>（就是你正在看的这张）</p>
+    <p class="sub" style="margin:10px 0 0;">对方流程：装 DSH → 加索引源 → 搜 Translate → 安装 → Ctrl+R → 用。整个过程不需要你远程帮忙。</p>
+  </div>
+  <div class="warn">
+    <b>提醒对方两件事</b><br>
+    ① 这个插件本身<b>不含任何账号密码</b>，也不需要你给他 key —— 用的是他自己 DSH 里的 DeepSeek key。<br>
+    ② 谷歌引擎只是可选对照，默认的 DeepSeek 引擎在墙内直接能用，不需要任何代理。
+  </div>
+
+  <div class="ok">
+    <b>一句话</b>：加一行索引源 → 市场里搜 Translate → 装 → Ctrl+R → 点「翻译」选国家粘文字。依赖只有 DSH 和一个 DeepSeek key，别的都不用装。
+  </div>
+
+  <div class="footer">
+    <span>按国家翻译 · 安装与使用 · 插件 v0.1.0</span>
+    <span>github.com/hbycwzm001/dsh-plugin-translate</span>
+  </div>
+</div>
+</body>
+</html>

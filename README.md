@@ -61,8 +61,10 @@ dsh plugin add git+https://github.com/hbycwzm001/dsh-plugin-translate.git
 
 ## 文档
 
-- [使用图谱（HTML）](docs/使用图谱.html)
-- [使用教程长图](docs/使用教程-长图.png)
+**先看这两份（发给别人就用它们）**
+
+- [安装教程（HTML）](docs/安装教程.html) ｜ [安装教程长图](docs/安装教程-长图.png)
+- [使用图谱（HTML）](docs/使用图谱.html) ｜ [使用教程长图](docs/使用教程-长图.png)
 
 ## 许可
 
