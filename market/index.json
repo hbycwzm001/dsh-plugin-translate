@@ -38,7 +38,7 @@
         "url": "https://github.com/hbycwzm001/dsh-plugin-translate"
       },
       "metadata": {
-        "category": "media",
+        "category": "text",
         "keywords": [
           "video",
           "download",
@@ -54,11 +54,11 @@
       "versions": [
         {
           "version": "0.1.0",
-          "publishTimestamp": 1795235448,
+          "publishTimestamp": 1795235467,
           "source": {
             "type": "git",
             "url": "https://github.com/hbycwzm001/dsh-plugin-translate",
-            "commit": "cf1d5effb8d53e6b13a685bc8708f3bc00a1d3c3"
+            "commit": "387c73251c304fd7a60ee5abe6062803490ba83a"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.1"
