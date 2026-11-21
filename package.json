@@ -1,0 +1,73 @@
+{
+  "name": "dsh-plugin-translate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "description": "DSH 插件：按国家翻译（译成当地人真正会说的那种话），提供「翻译」标签页与 Agent 工具",
+  "license": "MIT",
+  "icon": "icon.svg",
+  "author": {
+    "name": "hbycwzm001"
+  },
+  "homepage": "https://github.com/hbycwzm001/dsh-plugin-translate",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hbycwzm001/dsh-plugin-translate.git"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "countries.json",
+    "cordis.patch.yml",
+    "icon.svg",
+    "locale",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22",
+    "dsh": ">=0.2.2-rc.1"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.2.2-rc.1+": "compatible",
+        "0.2.2-rc.3+": "compatible"
+      }
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/dsh-tools": ">=0.2.0-rc.2",
+    "@deepseek-ai/schemastery": "^3.18.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    },
+    "@deepseek-ai/schemastery": {
+      "optional": true
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/hbycwzm001/dsh-plugin-translate/issues"
+  }
+}

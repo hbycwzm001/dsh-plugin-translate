@@ -1,0 +1,9 @@
+- insert:
+    - id: translate-tools
+      name: dsh-plugin-translate
+      config:
+        apiKeyEnv: DEEPSEEK_API_KEY
+        baseUrl: https://api.deepseek.com
+        model: deepseek-chat
+        timeoutMs: 60000
+        showTab: true

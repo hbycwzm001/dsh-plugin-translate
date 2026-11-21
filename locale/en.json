@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Translate by country",
+    "description": "Translate into what locals actually say, not literal wording.",
+    "detail": "Adds a Translate tab: pick a country and tone, type anything, get native phrasing. Also exposes a translate_to_country tool."
+  }
+}

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>按国家翻译 · 使用图谱</title>
+<style>
+  :root{
+    --ink:#14171c; --muted:#6b7280; --line:#e6e8ee; --soft:#f6f7fa;
+    --brand:#2563eb; --brand-soft:#eef3ff; --warn-bg:#fff8e8; --warn-line:#f0c36d; --warn-ink:#7a4d00;
+    --ok:#0f9d58; --ok-soft:#e9f7ef;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:#eef1f7; color:var(--ink);
+    font:14px/1.72 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:1080px; margin:0 auto; background:#fff; padding:44px 52px 40px;}
+  .kicker{font-size:12px; letter-spacing:.14em; color:var(--brand); font-weight:700; text-transform:uppercase;}
+  h1{font-size:34px; line-height:1.28; margin:10px 0 10px; letter-spacing:-.5px;}
+  .lede{color:var(--muted); font-size:14.5px; margin:0 0 6px;}
+  .hero{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 55%,#1e3a8a 100%); color:#fff; border-radius:18px; padding:32px 34px 28px; margin:18px 0 34px;}
+  .hero .kicker{color:#c7d7ff;}
+  .hero h1{color:#fff; margin:8px 0 10px;}
+  .hero .lede{color:#dbe6ff;}
+  .tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+  .tag{background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28); color:#fff; font-size:12px; padding:4px 11px; border-radius:999px;}
+  h2{font-size:19px; margin:34px 0 12px; display:flex; align-items:center; gap:10px;}
+  h2 .n{width:26px; height:26px; border-radius:8px; background:var(--brand); color:#fff; font-size:14px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+  h3{font-size:14.5px; margin:0 0 6px;}
+  p{margin:0 0 10px;}
+  .sub{color:var(--muted); font-size:13px; margin:0 0 14px;}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px 22px; background:#fff; margin:12px 0;}
+  .card.soft{background:var(--soft);}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .steps{counter-reset:s; margin:0; padding:0; list-style:none;}
+  .steps li{position:relative; padding:0 0 0 46px; margin:0 0 18px;}
+  .steps li:last-child{margin-bottom:0;}
+  .steps li::before{
+    counter-increment:s; content:counter(s);
+    position:absolute; left:0; top:2px; width:30px; height:30px; border-radius:999px;
+    background:var(--brand-soft); color:var(--brand); border:1px solid #cfdcff;
+    font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center;
+  }
+  .steps b{display:block; font-size:14.5px;}
+  .steps span{color:var(--muted); font-size:13px;}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  code{background:#f1f3f8; border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:12.5px;}
+  .codeblock{background:#0f172a; color:#e6ecff; border-radius:10px; padding:13px 15px; font-size:12.5px; line-height:1.7; overflow:hidden;}
+  .codeblock .c{color:#93a4c8;}
+  table{border-collapse:collapse; width:100%; font-size:13px;}
+  th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-size:12px; color:var(--muted); font-weight:600; background:#fafbfe;}
+  tr:last-child td{border-bottom:none;}
+  .warn{background:var(--warn-bg); border-left:4px solid var(--warn-line); color:var(--warn-ink); padding:14px 16px; border-radius:8px; font-size:13px; margin:16px 0;}
+  .ok{background:var(--ok-soft); border-left:4px solid var(--ok); padding:14px 16px; border-radius:8px; font-size:13px; margin:16px 0;}
+  .pill{display:inline-block; font-size:11.5px; padding:2px 8px; border-radius:999px; background:var(--brand-soft); color:var(--brand); border:1px solid #d5e1ff; margin-right:6px;}
+  .pill.gray{background:#f3f4f7; color:#5b6478; border-color:#e3e6ee;}
+  .swatch{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:6px; vertical-align:-1px;}
+  .kv{display:grid; grid-template-columns:104px 1fr; gap:6px 12px; font-size:13px;}
+  .kv dt{color:var(--muted);}
+  .kv dd{margin:0;}
+  .footer{margin-top:34px; padding-top:16px; border-top:1px solid var(--line); display:flex; justify-content:space-between; color:var(--muted); font-size:12px;}
+  .flow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12.5px;}
+  .flow .box{border:1px solid var(--line); background:#fbfcff; border-radius:8px; padding:7px 11px; color:#2b3446;}
+  .flow .arrow{color:#9aa4b8;}
+  .quote{border-left:3px solid #d7dced; padding:2px 0 2px 14px; color:#3d4658; font-size:13px; margin:8px 0;}
+  @media (max-width:1040px){ .page{width:100%;} .grid,.grid3{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <section class="hero">
+    <div class="kicker">DSH PLUGIN · TRANSLATE</div>
+    <h1>按国家翻译<br>翻成当地人真正会说的那句话</h1>
+    <div class="lede">选一个目标国家，输入中文，得到的是那个国家的人日常会用的表达 —— 不是逐字直译。附实时汇率换算。</div>
+    <div class="tags">
+      <span class="tag">249 个国家 / 地区</span>
+      <span class="tag">DeepSeek 本地化 · 谷歌直译</span>
+      <span class="tag">实时汇率</span>
+      <span class="tag">反向翻译自检</span>
+    </div>
+  </section>
+
+  <h2><span class="n">1</span>它长在哪</h2>
+  <p class="sub">装好插件后，DSH 对话窗口上方会多一个「翻译」标签，和「对话 / 轨迹 / 上下文 / 队列」并排。</p>
+  <div class="card soft">
+    <div class="flow">
+      <span class="box">对话</span><span class="arrow">·</span>
+      <span class="box">轨迹</span><span class="arrow">·</span>
+      <span class="box">上下文</span><span class="arrow">·</span>
+      <span class="box">队列</span><span class="arrow">→</span>
+      <span class="box" style="background:#eef3ff;border-color:#c9d8ff;color:#1d4ed8;font-weight:600;">翻译（新增）</span>
+    </div>
+    <p style="margin:12px 0 0;color:var(--muted);font-size:13px;">点开就是一个面板：目标国家 + 翻译引擎 + 语气 + 输入框 + 按钮。没有第二步配置，不用开命令行。</p>
+  </div>
+
+  <h2><span class="n">2</span>三步翻译</h2>
+  <ol class="steps">
+    <li><b>点顶栏「翻译」</b><span>对话区换成翻译面板，上次的输入和结果还在。</span></li>
+    <li><b>选目标国家</b><span>常用国家有快捷按钮（美国 / 日本 / 墨西哥 / 巴西 / 德国 / 法国）；其他 240 多个用搜索框输入国名、语言或货币代码。</span></li>
+    <li><b>粘文字 → 点「翻译」</b><span>也可以按 <code>Ctrl + Enter</code>；通常 1～3 秒出结果。</span></li>
+  </ol>
+
+  <h2><span class="n">3</span>选国家：两种方式，249 个</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>预设 + 下拉</h3>
+      <p class="sub">点开就是一个大列表，鼠标选。每行显示 <b>国名 · 语言 · 货币</b>，一眼能看出翻成哪种话、花的是哪种钱。</p>
+    </div>
+    <div class="card">
+      <h3>直接搜索</h3>
+      <p class="sub">输入框里敲国家名、语言名、货币代码都行：<code>巴西</code>、<code>葡萄牙</code>、<code>BRL</code>、<code>ar-SA</code> 都能命中。</p>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:10px;">同一个语言在不同国家是两套说法，所以列表按“国家”而不是“语言”排：<span class="pill">美国 en-US</span><span class="pill">英国 en-GB</span><span class="pill">墨西哥 es-MX</span><span class="pill">西班牙 es-ES</span><span class="pill">巴西 pt-BR</span><span class="pill">葡萄牙 pt-PT</span></p>
+
+  <h2><span class="n">4</span>翻译引擎：两套，选一个</h2>
+  <table>
+    <tr><th style="width:150px;">引擎</th><th>效果</th><th style="width:180px;">什么时候用</th></tr>
+    <tr>
+      <td><b>DeepSeek</b><br><span class="pill">推荐</span></td>
+      <td>按目标国家做本地化：用当地惯用语、当地语气、当地数字格式。同一个词，美国说法和墨西哥说法会不一样。</td>
+      <td>发给客户、发帖、报价单 —— 要“像当地人写的”。</td>
+    </tr>
+    <tr>
+      <td><b>Google</b></td>
+      <td>逐句直译，准确但不带当地语气，也不会替你换成本地说法。</td>
+      <td>只需要看懂大概意思；或做对照检查。<br><span style="color:var(--muted);">需本机开着 Clash 等代理。</span></td>
+    </tr>
+  </table>
+
+  <h2><span class="n">5</span>语气：四档，影响用词</h2>
+  <div class="grid">
+    <div class="card"><h3>口语化商务</h3><p class="sub">像销售在微信上跟客户聊，自然、不生硬。默认。</p></div>
+    <div class="card"><h3>正式商务</h3><p class="sub">报价、合同、正式邮件。用词克制，不缩略。</p></div>
+  </div>
+  <div class="grid" style="margin-top:0;">
+    <div class="card"><h3>日常口语</h3><p class="sub">朋友之间说话，带当地俚语，最“接地气”。</p></div>
+    <div class="card"><h3>客服友好</h3><p class="sub">售后、答疑。语气软，先共情再给方案。</p></div>
+  </div>
+
+  <h2><span class="n">6</span>实时汇率：一行算完</h2>
+  <div class="card">
+    <div class="kv">
+      <dt>怎么用</dt><dd>左边选<b>源国家</b>（默认 中国 · CNY），输入金额，右边选<b>目标国家</b>，第二列自动出现该国货币金额。</dd>
+      <dt>看到的样子</dt><dd><code>中国·中文·CNY　[10] CNY →　美国·英语·USD　$1.49　1 CNY ≈ 0.1494 USD</code></dd>
+      <dt>更新时间</dt><dd>每天更新一次（源时间 00:02 UTC = 北京 08:02）。点 <b>↻ 刷新</b> 可强制重取。</dd>
+      <dt>口径</dt><dd><b>中间价</b>（市场价），不是银行柜台现钞牌价；做正式报价请以银行牌价为准。</dd>
+    </div>
+  </div>
+
+  <h2><span class="n">7</span>结果卡：不只给一段文字</h2>
+  <div class="grid3">
+    <div class="card"><h3>复制</h3><p class="sub">一键复制译文，直接粘到邮件 / WhatsApp / 报价单。</p></div>
+    <div class="card"><h3>反向翻译</h3><p class="sub">把译文再翻回中文，自己检查有没有走样 —— 看不懂外文也能验。</p></div>
+    <div class="card"><h3>字数 / 耗时</h3><p class="sub">原文多少字、这次翻译用了几毫秒，都显示在按钮右边。</p></div>
+  </div>
+
+  <h2><span class="n">8</span>它和普通翻译的区别（同一句话）</h2>
+  <p class="sub">原文：<span style="color:#3d4658;">这台东风勇士 EQ2050 是 3.2L 涡轮增压柴油四驱，军规底盘，涉水 1.2 米，现车在洛杉矶仓，25 万人民币起。</span></p>
+  <table>
+    <tr><th style="width:110px;">目标国家</th><th>译文（节选）</th></tr>
+    <tr><td>美国 en-US</td><td>This Dongfeng Warrior EQ2050 <b>runs</b> a 3.2L turbo diesel with four-wheel drive… <b>It's in stock</b> at our LA warehouse, <b>starting at</b> ¥250,000 RMB.</td></tr>
+    <tr><td>墨西哥 es-MX</td><td>Esta Dongfeng Warrior EQ2050 <b>trae motor</b> 3.2L turbodiésel, tracción 4x4… Unidad disponible… <b>despacho aduanal</b>…</td></tr>
+    <tr><td>沙特 ar-SA</td><td><span dir="rtl" style="unicode-bidi:isolate;display:inline-block;">هذي الـ EQ2050 بمحرك ديزل تيربو… متوفرة الحين…</span><br><span class="pill gray">用海湾口语 هذي / الحين（书面语是 هذه / الآن）</span></td></tr>
+    <tr><td>巴西 pt-BR</td><td>Essa Dongfeng Warrior EQ2050 é 3.2L turbo diesel… passa por até <b>1,2 m</b> de água… a partir de <b>¥ 250.000</b></td></tr>
+  </table>
+  <p class="sub" style="margin-top:10px;">差别在细节：墨西哥用 <code>trae motor</code>（不是 tiene）、沙特用海湾口语 <code>هذي / الحين</code>（不是 هذه / الآن）、巴西小数点写成 <code>1,2</code>。这些正是“当地人一看就懂”的地方。</p>
+
+  <h2><span class="n">9</span>常见问题</h2>
+  <table>
+    <tr><th style="width:230px;">现象</th><th>怎么处理</th></tr>
+    <tr><td>国家下拉是空的</td><td>插件装好后没刷新。按 <code>Ctrl + R</code> 重载界面；仍空就是插件没加载成功，去「插件」页看是否启用。</td></tr>
+    <tr><td>翻译失败：api key 无效</td><td>面板会弹输入框，填一个有效的 DeepSeek key 后点「保存并重试」；key 只在本次会话内存里，不落盘。</td></tr>
+    <tr><td>谷歌引擎报 429 / 超时</td><td>谷歌免费接口对出口 IP 限流。换节点、或直接用 DeepSeek 引擎（更稳，也更适合本地化）。</td></tr>
+    <tr><td>汇率和我印象里不一样</td><td>插件用的是中间价，且每天更新一次。以 <code>api.frankfurter.app</code> 等第三方交叉核对，误差 1% 内属正常。</td></tr>
+    <tr><td>只想要入口不占地方</td><td>插件设置里有「在对话顶部显示「翻译」标签」开关，关掉只隐藏入口，翻译能力和 Agent 工具照常可用。</td></tr>
+  </table>
+
+  <div class="warn">
+    <b>两条使用提醒</b><br>
+    ① 翻译结果建议用「反向翻译」自检一次再发客户 —— 尤其是金额、型号、法规这几类不容出错的内容。<br>
+    ② 汇率是中间价、每天一更，只适合参考和初步报价；正式合同请用银行当日牌价。
+  </div>
+
+  <div class="ok">
+    <b>一句话</b>：选国家 → 粘文字 → 点翻译。要“像当地人说的话”用 DeepSeek；只要看懂意思用 Google。价格拿不准，就在中间那行汇率里算一下。
+  </div>
+
+  <div class="footer">
+    <span>按国家翻译 · DSH 插件 v0.1.0</span>
+    <span>249 国 · DeepSeek + Google 双引擎 · 汇率中间价</span>
+  </div>
+</div>
+</body>
+</html>
