@@ -12,6 +12,9 @@ const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
 const iconSvg = readFileSync(join(root, pkg.icon ?? 'icon.svg'))
+const metaPath = join(here, 'meta.json')
+let META = null
+try { META = JSON.parse(readFileSync(metaPath, 'utf8')) } catch { META = null }
 const repoUrl =
   process.argv[2] ?? pkg.repository?.url?.replace(/^git\+/, '').replace(/\.git$/, '') ?? 'https://github.com/REPLACE-ME/dsh-plugin-media-extract'
 const commitSha = process.argv[3]
@@ -29,13 +32,13 @@ const publishTimestamp = Math.floor(Date.now() / 1000)
 
 const index = {
   format: 1,
-  title: { en: 'Media Extractor', zh: '视频解析下载' },
-  description: {
+  title: META?.title ?? { en: 'Media Extractor', zh: '视频解析下载' },
+  description: META?.description ?? {
     en: 'Turn any video or photo-post link into the original file plus caption and transcript.',
     zh: '把任意视频/图文链接变成原片 + 文案 + 转写文本，七平台通用。',
   },
   metadata: {
-    categories: {
+    categories: META?.categories ?? {
       media: { title: { en: 'Media', zh: '媒体处理' } },
     },
     labels: {},
@@ -44,8 +47,8 @@ const index = {
   plugins: [
     {
       name: pkg.name,
-      title: { en: 'Media Extractor', zh: '视频解析下载' },
-      description: {
+      title: META?.pluginTitle ?? { en: 'Media Extractor', zh: '视频解析下载' },
+      description: META?.pluginDescription ?? {
         en: 'Paste a link from Douyin, Xiaohongshu, TikTok, YouTube, Facebook, X or Instagram and get the original file, the caption and a local transcript.',
         zh: '支持抖音、小红书、TikTok、YouTube、Facebook、X、Instagram：粘链接 → 原片 + 文案 + 转写，全部本地运行。',
       },
@@ -54,7 +57,7 @@ const index = {
       homepage: repoUrl,
       repository: { url: repoUrl },
       metadata: {
-        category: 'media',
+        category: META?.categoryId ?? 'media',
         keywords: ['video', 'download', 'transcript', 'tiktok', 'youtube', 'douyin', 'instagram'],
         labels: [],
         sortKeys: {},

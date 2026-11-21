@@ -7,9 +7,7 @@
   "description": "DSH 插件：按国家翻译（译成当地人真正会说的那种话），提供「翻译」标签页与 Agent 工具",
   "license": "MIT",
   "icon": "icon.svg",
-  "author": {
-    "name": "hbycwzm001"
-  },
+  "author": "hbycwzm001",
   "homepage": "https://github.com/hbycwzm001/dsh-plugin-translate",
   "repository": {
     "type": "git",

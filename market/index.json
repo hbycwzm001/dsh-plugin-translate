@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "title": {
+    "en": "Country Translator",
+    "zh": "按国家翻译"
+  },
+  "description": {
+    "en": "Translate into what people in a specific country actually say — not a literal gloss. 249 countries, live FX, back-translation check.",
+    "zh": "按目标国家做本地化翻译：翻成当地人真正会说的那句话，附实时汇率与反向翻译自检。249 个国家/地区。"
+  },
+  "metadata": {
+    "categories": {
+      "text": {
+        "title": {
+          "en": "Text",
+          "zh": "文本处理"
+        }
+      }
+    },
+    "labels": {},
+    "sortKeys": {}
+  },
+  "plugins": [
+    {
+      "name": "dsh-plugin-translate",
+      "title": {
+        "en": "Country Translator",
+        "zh": "按国家翻译"
+      },
+      "description": {
+        "en": "Pick a country, paste Chinese, get the expression locals actually use. Plus live exchange-rate conversion and a back-translation check.",
+        "zh": "选一个国家，粘中文，得到当地人日常会说的表达。附实时汇率换算与反向翻译自检。"
+      },
+      "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMyNTYzZWIiLz4KICA8cGF0aCBkPSJNMTQgMjBoMjB2My40SDI0LjZWMzBIMzJ2My40aC03LjR2My4yaDkuMmMxLTIuMiAxLjctNC42IDIuMS03LjJoMy42Yy0uNSAzLTEuNCA1LjgtMi42IDguM2w2LjEgNi0yLjQgMi40LTYtNmMtMiAzLTQuNyA1LjYtOCA3LjdsLTIuMS0yLjljMy4yLTEuOSA1LjctNC4yIDcuNS03LjNIMTR2LTMuNGg4LjZ2LTMuMmgtNS40VjI3aDUuNHYtMy42SDE0eiIgZmlsbD0iI2ZmZiIvPgogIDxjaXJjbGUgY3g9IjQ1IiBjeT0iMTkiIHI9IjkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHBhdGggZD0iTTM2IDE5aDE4TTQ1IDEwYzMgMyAzIDE1IDAgMThNNDUgMTBjLTMgMy0zIDE1IDAgMTgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyLjIiIGZpbGw9Im5vbmUiLz4KPC9zdmc+Cg==",
+      "author": "hbycwzm001",
+      "homepage": "https://github.com/hbycwzm001/dsh-plugin-translate",
+      "repository": {
+        "url": "https://github.com/hbycwzm001/dsh-plugin-translate"
+      },
+      "metadata": {
+        "category": "media",
+        "keywords": [
+          "video",
+          "download",
+          "transcript",
+          "tiktok",
+          "youtube",
+          "douyin",
+          "instagram"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishTimestamp": 1795235448,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/hbycwzm001/dsh-plugin-translate",
+            "commit": "cf1d5effb8d53e6b13a685bc8708f3bc00a1d3c3"
+          },
+          "engines": {
+            "dsh": ">=0.2.2-rc.1"
+          }
+        }
+      ]
+    }
+  ]
+}
