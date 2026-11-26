@@ -23,5 +23,16 @@
     "en": "Pick a country, paste Chinese, get the expression locals actually use. Plus live exchange-rate conversion and a back-translation check.",
     "zh": "选一个国家，粘中文，得到当地人日常会说的表达。附实时汇率换算与反向翻译自检。"
   },
-  "categoryId": "text"
+  "categoryId": "text",
+  "keywords": [
+    "translate",
+    "translation",
+    "localization",
+    "i18n",
+    "country",
+    "language",
+    "exchange-rate",
+    "fx",
+    "deepseek"
+  ]
 }

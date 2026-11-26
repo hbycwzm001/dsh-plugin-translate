@@ -59,24 +59,41 @@ async function readKey(config, override) {
   if (config && config.apiKey && String(config.apiKey).trim()) {
     return { key: String(config.apiKey).trim(), source: 'plugin-config' };
   }
+  try {
+    const rawSaved = await fs.readFile(KEY_FILE, 'utf8');
+    let saved = '';
+    try { saved = String((JSON.parse(rawSaved) || {}).key || ''); } catch { saved = rawSaved; }
+    if (saved.trim()) return { key: saved.trim(), source: 'key-file' };
+  } catch { /* 忽略 */ }
   const envName = (config && config.apiKeyEnv) || 'DEEPSEEK_API_KEY';
   try {
     const raw = await fs.readFile(path.join(DSH_HOME, '.credentials.yaml'), 'utf8');
     const m = raw.match(new RegExp(`^\\s*${envName}\\s*:\\s*(\\S+)`, 'm'));
-    if (m && m[1].trim()) return { key: m[1].trim(), source: 'credentials' };
+    if (m && m[1].trim()) {
+      let v = m[1].trim();
+      if (v.length >= 2 && ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'")))) v = v.slice(1, -1);
+      if (v) return { key: v, source: 'credentials' };
+    }
   } catch { /* 忽略 */ }
   if (process.env[envName]) return { key: String(process.env[envName]).trim(), source: 'env' };
   return { key: '', source: 'none' };
 }
 
 async function probeKey(config, key) {
-  const res = await fetch(`${config.baseUrl || 'https://api.deepseek.com'}/chat/completions`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
-    body: JSON.stringify({ model: config.model || 'deepseek-chat', messages: [{ role: 'user', content: 'ping' }], max_tokens: 1 })
-  });
-  const text = await res.text();
-  return { ok: res.ok, status: res.status, detail: text.slice(0, 300) };
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 10000);
+  try {
+    const res = await fetch(`${config.baseUrl || 'https://api.deepseek.com'}/chat/completions`, {
+      method: 'POST',
+      signal: ctl.signal,
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+      body: JSON.stringify({ model: config.model || 'deepseek-chat', messages: [{ role: 'user', content: 'ping' }], max_tokens: 1 })
+    });
+    const text = await res.text();
+    return { ok: res.ok, status: res.status, detail: text.slice(0, 300) };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 const GOOGLE_EP = 'https://translate.googleapis.com/translate_a/single';
@@ -150,8 +167,10 @@ async function translate(config, args) {
   const body = String((args && args.text) || '').trim();
   if (!body) throw new Error('请输入要翻译的内容');
 
-  const want = String((args && args.code) || 'en-US');
-  const country = COUNTRIES.find((c) => c.code === want || c.country === want) || COUNTRIES[0];
+  const want = String((args && (args.code || args.country)) || 'en-US');
+  const country = COUNTRIES.find((c) => c.code === want || c.country === want || c.locale === want)
+    || COUNTRIES.find((c) => c.code === 'en-US');
+  if (!country) throw new Error(`找不到目标国家「${want}」，国家表里也没有默认的 en-US 条目`);
   const reg = REGISTERS.find((r) => r[0] === (args && args.register)) || REGISTERS[0];
 
   const provider = String((args && args.provider) || config.provider || 'deepseek');
@@ -220,7 +239,8 @@ async function translate(config, args) {
   }
 }
 
-const STATE_FILE = path.join(os.homedir(), '.dsh', 'dsh-plugin-translate.state.json');
+const STATE_FILE = path.join(DSH_HOME, 'dsh-plugin-translate.state.json');
+const KEY_FILE = path.join(DSH_HOME, 'dsh-plugin-translate.key.json');
 
 async function readState() {
   try {
@@ -253,8 +273,9 @@ async function fxRates(base, fresh) {
   const b = String(base || 'CNY').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3) || 'CNY';
   const hit = FX_CACHE.get(b);
   if (!fresh && hit && Date.now() - hit.at < FX_TTL) return hit.data;
-  const res = await fetch(`https://open.er-api.com/v6/latest/${b}`);
-  const j = await res.json();
+  const res = await fetch(`https://open.er-api.com/v6/latest/${b}`, { signal: AbortSignal.timeout(10000) });
+  if (!res.ok) throw new Error(`汇率服务请求失败（HTTP ${res.status}）`);
+  const j = await res.json().catch(() => null);
   if (!j || j.result !== 'success' || !j.rates) throw new Error('汇率服务返回异常');
   const data = {
     base: j.base_code || b,
@@ -286,8 +307,14 @@ export function apply(ctx, config) {
           properties: {
             ok: { type: 'boolean' },
             out: { type: 'string' },
+            text: { type: 'string' },
+            code: { type: 'string' },
             country: { type: 'string' },
             language: { type: 'string' },
+            provider: { type: 'string' },
+            register: { type: 'string' },
+            source: { type: 'string' },
+            proxy: { type: 'string' },
             ms: { type: 'number' }
           },
           required: ['ok', 'out'],
@@ -388,9 +415,22 @@ export function apply(ctx, config) {
           return new Response(JSON.stringify({ ok: false, error: 'Key 看起来不对（长度不足）' }),
             { headers: { 'content-type': 'application/json; charset=utf-8' } });
         }
-        const pr = await probeKey(config, k);
+        let pr;
+        try {
+          pr = await probeKey(config, k);
+        } catch (err) {
+          return new Response(JSON.stringify({ ok: false, error: `Key 验证请求失败：${String((err && err.message) || err)}` }),
+            { headers: { 'content-type': 'application/json; charset=utf-8' } });
+        }
         if (!pr.ok) {
           return new Response(JSON.stringify({ ok: false, error: `Key 验证失败（HTTP ${pr.status}）：${pr.detail}` }),
+            { headers: { 'content-type': 'application/json; charset=utf-8' } });
+        }
+        try {
+          await fs.mkdir(path.dirname(KEY_FILE), { recursive: true });
+          await fs.writeFile(KEY_FILE, JSON.stringify({ key: k }, null, 2), { encoding: 'utf8', mode: 0o600 });
+        } catch (err) {
+          return new Response(JSON.stringify({ ok: false, error: `Key 已验证，但保存失败：${String((err && err.message) || err)}` }),
             { headers: { 'content-type': 'application/json; charset=utf-8' } });
         }
         return new Response(JSON.stringify({ ok: true, tail: k.slice(-4) }), {

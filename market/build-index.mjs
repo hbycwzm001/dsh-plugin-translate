@@ -15,8 +15,12 @@ const iconSvg = readFileSync(join(root, pkg.icon ?? 'icon.svg'))
 const metaPath = join(here, 'meta.json')
 let META = null
 try { META = JSON.parse(readFileSync(metaPath, 'utf8')) } catch { META = null }
+if (!META) {
+  console.error('market/meta.json 读取失败：索引的标题、文案、分类、关键词都从它读，先补好这个文件')
+  process.exit(1)
+}
 const repoUrl =
-  process.argv[2] ?? pkg.repository?.url?.replace(/^git\+/, '').replace(/\.git$/, '') ?? 'https://github.com/REPLACE-ME/dsh-plugin-media-extract'
+  process.argv[2] ?? pkg.repository?.url?.replace(/^git\+/, '').replace(/\.git$/, '') ?? 'https://github.com/REPLACE-ME/dsh-plugin-translate'
 const commitSha = process.argv[3]
 
 if (commitSha && !/^[0-9a-f]{40}$/.test(commitSha)) {
@@ -32,33 +36,25 @@ const publishTimestamp = Math.floor(Date.now() / 1000)
 
 const index = {
   format: 1,
-  title: META?.title ?? { en: 'Media Extractor', zh: '视频解析下载' },
-  description: META?.description ?? {
-    en: 'Turn any video or photo-post link into the original file plus caption and transcript.',
-    zh: '把任意视频/图文链接变成原片 + 文案 + 转写文本，七平台通用。',
-  },
+  title: META.title,
+  description: META.description,
   metadata: {
-    categories: META?.categories ?? {
-      media: { title: { en: 'Media', zh: '媒体处理' } },
-    },
+    categories: META.categories,
     labels: {},
     sortKeys: {},
   },
   plugins: [
     {
       name: pkg.name,
-      title: META?.pluginTitle ?? { en: 'Media Extractor', zh: '视频解析下载' },
-      description: META?.pluginDescription ?? {
-        en: 'Paste a link from Douyin, Xiaohongshu, TikTok, YouTube, Facebook, X or Instagram and get the original file, the caption and a local transcript.',
-        zh: '支持抖音、小红书、TikTok、YouTube、Facebook、X、Instagram：粘链接 → 原片 + 文案 + 转写，全部本地运行。',
-      },
+      title: META.pluginTitle,
+      description: META.pluginDescription,
       icon: `data:image/svg+xml;base64,${iconSvg.toString('base64')}`,
       author: pkg.author ?? 'you',
       homepage: repoUrl,
       repository: { url: repoUrl },
       metadata: {
-        category: META?.categoryId ?? 'media',
-        keywords: ['video', 'download', 'transcript', 'tiktok', 'youtube', 'douyin', 'instagram'],
+        category: META.categoryId,
+        keywords: META.keywords ?? [],
         labels: [],
         sortKeys: {},
       },
