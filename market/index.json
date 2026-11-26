@@ -40,25 +40,27 @@
       "metadata": {
         "category": "text",
         "keywords": [
-          "video",
-          "download",
-          "transcript",
-          "tiktok",
-          "youtube",
-          "douyin",
-          "instagram"
+          "translate",
+          "translation",
+          "localization",
+          "i18n",
+          "country",
+          "language",
+          "exchange-rate",
+          "fx",
+          "deepseek"
         ],
         "labels": [],
         "sortKeys": {}
       },
       "versions": [
         {
-          "version": "0.1.0",
-          "publishTimestamp": 1795235467,
+          "version": "0.1.1",
+          "publishTimestamp": 1795671017,
           "source": {
             "type": "git",
             "url": "https://github.com/hbycwzm001/dsh-plugin-translate",
-            "commit": "387c73251c304fd7a60ee5abe6062803490ba83a"
+            "commit": "42a3431470c5517eee9793f3bd4cc825810bac7d"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.1"
